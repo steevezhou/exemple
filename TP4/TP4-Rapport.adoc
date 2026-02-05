@@ -21,8 +21,6 @@ image::img_1.png[Capture Challenge 3]
 === Q1 : Pourquoi la gestion par cookie est-elle dangereuse ?
 C'est dangereux car le cookie est stocké côté client, ce qui permet à l'utilisateur de le modifier facilement (via Burp Suite ou la touche F12). En changeant `false` en `true`, il peut usurper l'identité d'un administrateur et accéder à des fonctions réservées sans autorisation.
 
-image::image5.png[Illustration modification cookie]
-
 === Q2 : Quelle est la bonne méthode côté serveur ?
 On récupère le rang en base de données lors de la connexion, puis on le stocke dans une variable `$_SESSION`. Il suffit ensuite de placer une condition `if` au début de chaque page sensible pour bloquer l'accès si l'utilisateur n'est pas admin.
 
