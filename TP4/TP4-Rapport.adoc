@@ -1,0 +1,44 @@
+= Compte rendu de TP : BLOC 3 04-Atelier Sessions Portswigger
+:author: Votre Nom
+:toc: left
+:imagesdir: images
+
+== Challenges
+
+=== Challenge 1
+NOTE: Pas de capture d'écran prise, validé à l'écran durant la séance.
+
+=== Challenge 2
+image::img.png[Capture Challenge 2]
+
+=== Challenge 3
+image::img_1.png[Capture Challenge 3]
+
+---
+
+== Réponses aux questions
+
+=== Q1 : Pourquoi la gestion par cookie est-elle dangereuse ?
+C'est dangereux car le cookie est stocké côté client, ce qui permet à l'utilisateur de le modifier facilement (via Burp Suite ou la touche F12). En changeant `false` en `true`, il peut usurper l'identité d'un administrateur et accéder à des fonctions réservées sans autorisation.
+
+image::image5.png[Illustration modification cookie]
+
+=== Q2 : Quelle est la bonne méthode côté serveur ?
+On récupère le rang en base de données lors de la connexion, puis on le stocke dans une variable `$_SESSION`. Il suffit ensuite de placer une condition `if` au début de chaque page sensible pour bloquer l'accès si l'utilisateur n'est pas admin.
+
+=== Q3 : Quel élément technique permet de distinguer le bon login dans Burp ?
+C'est la taille de la réponse (Length). Toutes les mauvaises tentatives renvoient une page d'erreur identique avec le même nombre d'octets. Dès que le login est correct, la réponse change (ex : message de succès), ce qui crée une longueur différente dans le tableau de Burp Suite Intruder.
+
+=== Q4 : Quelle "Bonne Pratique" de développement (vue en cours) permettrait d’empêcher cette attaque ?
+Il faut mettre un blocage après plusieurs tentives d'échecs comme 3x ou 4x.
+
+=== Q5 : Quelle était la structure exacte du cookie décodé ? (Exemple : Login + Date, Login + Hash, etc.).
+La structure exacte du cookie décodé est sous base64 (par ex: username:password) et le hash en MD5.
+
+=== Q6. Pourquoi l’utilisation de l’algorithme MD5 pour hasher le mot de passe dans le cookie est-elle une faiblesse critique aujourd’hui ?
+Parce que l'algorithme est beaucoup trop rapide et on peut obtenir le password grâce à des sites comme Crack Station.
+
+=== Q7. Si le développeur avait utilisé un "Grain de sel" (Salt) aléatoire inconnu de l’attaquant pour générer le hash, l’attaque aurait-elle fonctionné ? Justifiez.
+Le salt ajoute des textes aléatoires qui rend chaque hash unique. Grâce à lui, deux mots de passe identiques (ex: 1234) ne se ressemblent plus du tout une fois stockés.
+
+Cela empêche les pirates d'utiliser des listes de réponses toutes prêtes : ils sont obligés de s'attaquer à chaque compte un par un, ce qui devient quasi impossible et prendrait trop de temps.
